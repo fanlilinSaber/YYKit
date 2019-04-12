@@ -1031,7 +1031,7 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
         container.size = YYTextContainerMaxSize;
         
         YYTextLayout *layout = [YYTextLayout layoutWithContainer:container text:_innerText];
-        return layout.textBoundingSize;
+        return layout.textBoundingRect.size;
     }
     
     CGSize containerSize = _innerContainer.size;
@@ -1049,7 +1049,7 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
     container.size = containerSize;
     
     YYTextLayout *layout = [YYTextLayout layoutWithContainer:container text:_innerText];
-    return layout.textBoundingSize;
+    return layout.textBoundingRect.size;
 }
 
 #pragma mark - YYTextDebugTarget
@@ -1109,7 +1109,7 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
         [attachmentViews removeAllObjects];
         [attachmentLayers removeAllObjects];
     };
-
+    
     task.display = ^(CGContextRef context, CGSize size, BOOL (^isCancelled)(void)) {
         if (isCancelled()) return;
         if (text.length == 0) return;
@@ -1141,7 +1141,7 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
         point = CGPointPixelRound(point);
         [drawLayout drawInContext:context size:size point:point view:nil layer:nil debug:debug cancel:isCancelled];
     };
-
+    
     task.didDisplay = ^(CALayer *layer, BOOL finished) {
         YYTextLayout *drawLayout = layout;
         if (layoutUpdated && shrinkLayout) {
